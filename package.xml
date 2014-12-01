@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <name>leonardo</name>
+  <version>0.0.0</version>
+  <description>Leonardo da Vinci vs Parrot AR.Drone 2.0</description>
+
+  <!-- Maintainers -->
+  <maintainer email="nicola.pasta@gmail.com">Nicola Pasta</maintainer>
+
+  <!-- License -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>TODO</license>
+
+  <!-- Authors -->
+  <author email="nicola.pasta@gmail.com">Nicola Pasta</author>
+
+  <!-- Dependencies -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>roscpp</run_depend>
+</package>
