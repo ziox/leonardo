@@ -18,3 +18,18 @@ catkin_package()
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
+
+add_executable(localizator src/localizator.cpp)
+target_link_libraries(localizator
+  ${catkin_LIBRARIES}
+)
+
+add_executable(navigator src/navigator.cpp)
+target_link_libraries(navigator
+  ${catkin_LIBRARIES}
+)
+
+add_executable(controller src/controller.cpp)
+target_link_libraries(controller
+  ${catkin_LIBRARIES}
+)
