@@ -32,4 +32,4 @@
 
 ## Conclusioni
 
-conclusione bellissima
+conclusione
