@@ -17,6 +17,7 @@ In this project we used the distribution known as Lubuntu. It's a fast and light
 ### ROS - Robot Operating System
 
 ROS is a flexible framework for writing robot software. It is a collection of tools, libraries, and conventions that aim to simplify the task of creating complex and robust robot behavior across a wide variety of robotic platforms.
+There are different versions of ROS, for the project we used ROS Indigo.
 
 #### Core components
 
@@ -25,6 +26,12 @@ ROS is a flexible framework for writing robot software. It is a collection of to
 - **Nodes**: A node is a process that performs computation. Nodes are combined together into a graph and communicate with one another using streaming topics, RPC services, and the Parameter Server. A robot control system will usually comprise many nodes.
 
 - **Comunication protocol - Publish/Subscribe**: The publisher writes a message on a topic provided by the roscore. All nodes that want to receive the message can request it to roscore and they are known as subscribers.
+
+#### Rviz - ROS visualization
+
+Rviz is a 3D visualizer for displaying sensor data and state information from ROS. Display live representations of sensor values coming over ROS Topics including camera data, infrared distance measurements, sonar data, and more.
+
+//SCREENSHOT
 
 ### Marker based navigation
 
@@ -45,6 +52,32 @@ The details about the implementation are in the Marker detection chapter.
 ### Camera
 
 ### Wi-fi connection
+
+### Ardrone_autonomy
+
+Ardrone_autonomy is a ROS driver for Parrot AR-Drone quadrocopter. This driver is based on official AR-Drone SDK version 2.0.1. The driver supports both AR-Drone 1.0 and 2.0.
+
+#### Legacy navigation data
+
+Information received from the drone will be published to the ardrone/navdata topic. The message type is ardrone_autonomy::Navdata and contains the following information:
+
+- **header**: ROS message header;
+- **batteryPercent**: The remaining charge of the drone's battery (%);
+- **state**: The Drone's current state: 0: Unknown 1: Inited 2: Landed 3,7: Flying 4: Hovering 5: Test (?) 6: Taking off 8: Landing 9: Looping;
+- **rotX**: Left/right tilt in degrees (rotation about the X axis);
+- **rotY**: Forward/backward tilt in degrees (rotation about the Y axis);
+- **rotZ**: Orientation in degrees (rotation about the Z axis);
+- **magX, magY, magZ**: Magnetometer readings (AR-Drone 2.0 Only);
+- **pressure**: Pressure sensed by Drone's barometer (AR-Drone 2.0 Only);
+- **temp**: Temperature sensed by Drone's sensor (AR-Drone 2.0 Only);
+- **wind_speed**: Estimated wind speed (AR-Drone 2.0 Only);
+- **wind_angle**: Estimated wind angle (AR-Drone 2.0 Only);
+- **wind_comp_angle**: Estimated wind angle compensation (AR-Drone 2.0 Only);
+- **altd**: Estimated altitude (mm);
+- **motor1..4**: Motor PWM values;
+- **vx, vy, vz**: Linear velocity (mm/s);
+- **ax, ay, az**: Linear acceleration (g);
+- **tm**: Timestamp of the data returned by the Drone returned as number of micro-seconds passed since Drone's boot-up.
 
 ## Marker detection
 
@@ -95,6 +128,7 @@ It should take at least five different pictures. A frontal one, and four where t
 
 We also had to indicate the number of corners of the pattern in both axes, and the real size of the square. 
 As output, the program generates a .yml file that can be used in ArUco. 
+
 
 
 
