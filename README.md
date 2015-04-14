@@ -26,8 +26,13 @@ ROS is a flexible framework for writing robot software. It is a collection of to
 
 - **Comunication protocol - Publish/Subscribe**: The publisher writes a message on a topic provided by the roscore. All nodes that want to receive the message can request it to roscore and they are known as subscribers.
 
-- ROS
-- Marker
+### Marker based navigation
+
+The core problem of the project is the navigation of an ARDrone based on marker. In the marker based navigation the robot moves between two positions by following a
+topological path consisting of a sequence of visual markers.
+<img src="https://www.dropbox.com/s/z678fa5dd0e4veu/Marker%20navigation.PNG?dl=0">
+
+
 - Filtraggio
 - eventuale virtuale machine
 
