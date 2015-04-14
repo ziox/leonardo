@@ -30,7 +30,7 @@ ROS is a flexible framework for writing robot software. It is a collection of to
 
 The core problem of the project is the navigation of an ARDrone based on marker. In the marker based navigation the robot moves between two positions by following a
 topological path consisting of a sequence of visual markers.
-<img src="https://www.dropbox.com/s/z678fa5dd0e4veu/Marker%20navigation.PNG?dl=0">
+<img src="https://dl-web.dropbox.com/get/Public/Marker%20navigation.PNG?_subject_uid=52788948&w=AABNJQUbnwxnGEGfMs5ThupfyjZ-e0dsrpQl4DSvdTeWKw">
 
 
 - Filtraggio
