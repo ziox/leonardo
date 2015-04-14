@@ -79,6 +79,41 @@ Information received from the drone will be published to the ardrone/navdata top
 - **ax, ay, az**: Linear acceleration (g);
 - **tm**: Timestamp of the data returned by the Drone returned as number of micro-seconds passed since Drone's boot-up.
 
+#### Cameras
+
+Both AR-Drone 1.0 and 2.0 are equipped with two cameras. One frontal camera pointing forward and one vertical camera pointing downward. This driver will create three topics for each drone: ardrone/image_raw, ardrone/front/image_raw and ardrone/bottom/image_raw. Each of these three are standard ROS camera interface and publish messages of type image transport. The driver is also a standard ROS camera driver, therefor if camera calibration information is provided either as a set of ROS parameters or appropriate ardrone_front.yaml and/or ardrone_bottom.yaml, the information will be published in appropriate camera_info topics.
+The ardrone will always contain the selected camera's video stream and information. Only one of ardrone/front or ardrone/bottom topics will be updated based on which camera is selected at the time.
+
+#### Sending Commands to AR-Drone
+
+The drone will takeoff, land or emergency stop/reset by publishing an Empty ROS messages to the following topics: ardrone/takeoff, ardrone/land and ardrone/reset respectively.
+
+In order to fly the drone after takeoff, you can publish a message of type geometry_msgs::Twist to the cmd_vel topic.
+
+    -linear.x: move backward
+    +linear.x: move forward
+    -linear.y: move right
+    +linear.y: move left
+    -linear.z: move down
+    +linear.z: move up
+
+    -angular.z: turn left
+    +angular.z: turn right
+
+The range for each component should be between -1.0 and 1.0. The maximum range can be configured using ROS parameters discussed later in this document.
+
+geometry_msgs::Twist has two other member variable called angular.x and angular.y which can be used to enable/disable "auto-hover" mode. "auto-hover" is enabled when all six components are set to zero. If you want the drone not to enter "auto hover" mode in cases you set the first four components to zero, set angular.x and angular.y to arbitrary non-zero values.
+
+#### Services
+
+##### Toggle AR-Drone's Camera
+
+Calling ardrone/togglecam service with no parameters will change the active video camera stream.
+
+##### Flat Trim
+
+Calling ardrone/flattrim service without any parameter will send a "Flat Trim" request to AR-Drone to re-calibrate its rotation estimates assuming that it is on a flat surface. Do not call this service while Drone is flying or while the drone is not actually on a flat surface.
+
 ## Marker detection
 
 One of the main problem in marker based navigation is to identify a marker using the camera. Here are the library used to solve this issue.
