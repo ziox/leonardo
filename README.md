@@ -1,4 +1,4 @@
-# Title
+# Leonardo
 
 ## Introduction
 
@@ -20,14 +20,11 @@ ROS is a flexible framework for writing robot software. It is a collection of to
 
 #### Core components
 
-- Roscore
--- Collection of nodes and programs that are pre-requisites of a ROS-based system. Must have a roscore running in order for ROS nodes to communicate.
+- Roscore: Collection of nodes and programs that are pre-requisites of a ROS-based system. Must have a roscore running in order for ROS nodes to communicate.
 
-- Nodes
--- A node is a process that performs computation. Nodes are combined together into a graph and communicate with one another using streaming topics, RPC services, and the Parameter Server. A robot control system will usually comprise many nodes.
+- Nodes: A node is a process that performs computation. Nodes are combined together into a graph and communicate with one another using streaming topics, RPC services, and the Parameter Server. A robot control system will usually comprise many nodes.
 
-- Comunication protocol - Publish/Subscribe
--- The publisher writes a message on a topic provided by the roscore. All nodes that want to receive the message can request it to roscore and they are known as subscribers.
+- Comunication protocol - Publish/Subscribe: The publisher writes a message on a topic provided by the roscore. All nodes that want to receive the message can request it to roscore and they are known as subscribers.
 
 - ROS
 - Marker
