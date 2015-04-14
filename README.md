@@ -12,7 +12,7 @@ Linux is packaged in a form known as a Linux distribution. Some popular Linux di
 
 #### Lubuntu
 
-In this project we used the distribution known as Lubuntu. It's a fast and lightweight operating system. The core of the system is based on Linux and Ubuntu. Lubuntu uses the minimal desktop LXDE, and a selection of light applications. We focus on speed and energy-efficiency. Because of this, Lubuntu has very low hardware requirements that make it suitable for the use on a virtual machine like in this project.
+In this project we used the distribution known as Lubuntu. It's a fast and lightweight operating system. The core of the system is based on Linux and Ubuntu. Lubuntu uses the minimal desktop LXDE, and a selection of light applications. It is focused on speed and energy-efficiency. Because of this, Lubuntu has very low hardware requirements that make it suitable for the use on a virtual machine like in this project.
 
 ### ROS - Robot Operating System
 
@@ -32,9 +32,7 @@ The core problem of the project is the navigation of an ARDrone based on marker.
 topological path consisting of a sequence of visual markers.
 The details about the implementation are in the Marker detection chapter.
 
-<div style="text-align:center">
-<img src="https://dl.dropboxusercontent.com/u/52788948/Marker%20navigation.PNG" ></div>
-
+<img src="https://dl.dropboxusercontent.com/u/52788948/Marker%20navigation.PNG" >
 ### Filtering
 
 - Filtraggio
@@ -63,15 +61,13 @@ Aruco is a minimal C++ library for Augmented Reality applications based on OpenC
 
 We also made a modify on the library deleting the code used to print on the console.
 
-<div style="text-align:center">
-<img src="http://iplimage.com/blog/wp-content/uploads/2012/02/marker.png" ></div>
+<img src="http://iplimage.com/blog/wp-content/uploads/2012/02/marker.png" >
 
 The library relies on the use of coded markers. Each marker has an unique code indicated by the black and white colors in it. The libary detect borders, and analyzes into the rectangular regions which of them are likely to be markers. Then, a decoding is performed and if the code is valid, it is considered that the rectangle is a marker.
 
 The codification included into the marker is a slighly modified version of the Hamming Code. It has a total of 25 bits didived in 5 rows of 5 bits each. So, we have 5 words of 5 bits. Each word, contains only 2 bits of real information, the rest is for  and error detection/correction (error correction is yet to be done). As a conclusion, a marker contains 10 bits of real information wich allows 1024 different markers.
 
-<div style="text-align:center">
-<img src="https://raw.githubusercontent.com/jchillerup/rokoko/master/aruco/rokoko/2a0board/2a0board.png" ></div>
+<img src="https://raw.githubusercontent.com/jchillerup/rokoko/master/aruco/rokoko/2a0board/2a0board.png" >
 
 
 #### ArUco classes
@@ -93,12 +89,12 @@ OpenCV (Open Source Computer Vision) is a library of programming functions for r
 
 Camera calibration is the process of obtaning the fundamental parameters of a camera. These parameter allows us to determine where a 3D point in the space projects in the camera sensor.
 To calibrate in OpenCV we only need to show images of a chessboard panel of known dimensions.
+It should take at least five different pictures. A frontal one, and four where the border of the pattern is near the image border. By placing the pattern near the image border it will be possible to estimate accurately the camera distorsion.
 
+<img src="http://www.uco.es/investiga/grupos/ava/sites/default/files/images/calibrationimage.png">
 
-
-
-
-
+We also had to indicate the number of corners of the pattern in both axes, and the real size of the square. 
+As output, the program generates a .yml file that can be used in ArUco. 
 
 
 
