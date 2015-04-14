@@ -74,7 +74,7 @@ The codification included into the marker is a slighly modified version of the H
 <img src="https://raw.githubusercontent.com/jchillerup/rokoko/master/aruco/rokoko/2a0board/2a0board.png" ></div>
 
 
-#### Aruco classes
+#### ArUco classes
 
 The ArUco library contents are divided in two main directories. The src directory, which contains the library itself. And the utils directory which contains the applications.
 
@@ -86,10 +86,22 @@ The library main classes are:
    - **aruco::Board**: This class defines a board detected in a image. The board has the extrinsic camera parameters as public atributes. In addition, it has a method that allows obtain the matrix for getting its position in OpenGL;
    - **aruco::BoardDetector**: This is the class in charge of detecting a board in a image. You must pass to it the set of markers detected by ArMarkerDetector and the BoardConfiguracion of the board you want to detect. This class will do the rest for you, even calculating the camera extrinsics.
 
-
-
+#### OpenCV
+OpenCV (Open Source Computer Vision) is a library of programming functions for realtime computer vision. It uses a BSD license and hence it's free for both academic and commercial use. It has C++, C, Python and Java (Android) interfaces.
    
-- Calib.
+#### Camera calibration
+
+Camera calibration is the process of obtaning the fundamental parameters of a camera. These parameter allows us to determine where a 3D point in the space projects in the camera sensor.
+To calibrate in OpenCV we only need to show images of a chessboard panel of known dimensions.
+
+
+
+
+
+
+
+
+
 
 ## Architettura
 
