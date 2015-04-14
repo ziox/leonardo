@@ -61,9 +61,18 @@ ARToolKit is a software library for building Augmented Reality applications. The
 Working on the project we found a better solution to the marker detection provided by the Aruco library. 
 Aruco is a minimal C++ library for Augmented Reality applications based on OpenCv developed by the University of Cordoba.
 
+We also made a modify on the library deleting the code used to print on the console.
+
+<div style="text-align:center">
+<img src="https://www.google.it/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0CAcQjRw&url=http%3A%2F%2Fiplimage.com%2Fblog%2Fcv-img-tec-black-white-marker-detection%2F&ei=KAgtVeqdCsnEPeKNgcgH&bvm=bv.90790515,d.d2s&psig=AFQjCNG3uXibJyAKzKjlM0KeC0Uw7cawsQ&ust=1429100937120769" ></div>
+
 The library relies on the use of coded markers. Each marker has an unique code indicated by the black and white colors in it. The libary detect borders, and analyzes into the rectangular regions which of them are likely to be markers. Then, a decoding is performed and if the code is valid, it is considered that the rectangle is a marker.
 
 The codification included into the marker is a slighly modified version of the Hamming Code. It has a total of 25 bits didived in 5 rows of 5 bits each. So, we have 5 words of 5 bits. Each word, contains only 2 bits of real information, the rest is for  and error detection/correction (error correction is yet to be done). As a conclusion, a marker contains 10 bits of real information wich allows 1024 different markers.
+
+<div style="text-align:center">
+<img src="https://www.google.it/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0CAcQjRw&url=https%3A%2F%2Fgithub.com%2Fjchillerup%2Frokoko%2Fblob%2Fmaster%2Freadme.md&ei=QAgtVYKmOMrXPZqGgMgJ&bvm=bv.90790515,d.d2s&psig=AFQjCNG3uXibJyAKzKjlM0KeC0Uw7cawsQ&ust=1429100937120769" ></div>
+
 
 #### Aruco classes
 
@@ -79,8 +88,7 @@ The library main classes are:
 
 
 
-- Aruco (fa meno cagare)
-  (fix lib logs)
+   
 - Calib.
 
 ## Architettura
