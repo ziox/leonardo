@@ -49,9 +49,22 @@ The details about the implementation are in the Marker detection chapter.
 
 ### Introduction
 
+Parrot AR.Drone is a radio controlled flying quadcopter built by the French company Parrot. The drone is designed to be controlled by mobile or tablet operating systems such as the supported iOS or Android within their respective apps.
+The airframe of the AR.Drone, constructed of nylon and carbon fiber parts, measures 57 cm across. Two interchangeable hulls were supplied with the airframe, one designed for indoor and one for external flight. The indoor hull is made from foam, and encases the circumference of the blades for protection. The outdoors use hull is made from lightweight plastic, and allows for increased maneuvrability. In total, the AR.Drone has six degrees of freedom, with a miniaturized inertial measurement unit tracking the pitch, roll and yaw for use in stabilisation.
+Inside the airframe, a range of sensors assist flight, enabling the interface used by pilots to be simpler, and making advanced flight easier. The onboard computer runs a Linux operating system, and communicates with the pilot through a self-generated Wi-Fi hotspot. The onboard sensors include an ultrasonic altimeter, which is used to provide vertical stabilisation up to 6 m. The rotors are powered by 15 watt, brushless motors powered by an 11.1 Volt lithium polymer battery. This provides approximately 12 minutes of flight time at a speed of 5 m/s. Coupled with software on the piloting device, the forward facing camera allowed the drone to build a 3D environment, track objects and other drones.
+In this project we used the **AR.drone version 2.0**, rather than the first version it was significantly upgraded to improve the drone's function. The camera quality was increased, and many of the onboard sensors were made more sensitive, allowing for greater control. The ultrasound altimeter was enhanced with the addition of an air pressure sensor, allowing for more stable flight and hovering. The resources available to the onboard computer were also improved, and the Wi-Fi hardware was updated to a newer standard. Other sensor improvements upgraded the gyroscope to a 3-axis version, along with a 3-axis accelerometer and magnetometer.
+
 ### Camera
 
+The AR.drone version 2.0 provides two cameras with different features:
+- Front camera: 720p sensor with 93° lens, recording up to 30fps;
+- Vertical camera: QVGA sensor with 64° lens, recording up to 60fps.
+In this project we used the vertical camera to recognize the markers. An important aspect is the standard reference system of the camera, from the center of which the z axis comes out. 
+
+
 ### Wi-fi connection
+
+The connection between the AR.drone and the computer used for the control is created using the self-generated Wi-Fi 802.11n hotspot provided by the AR.drone. The Wi-Fi network has an ESSID usually called ardrone2_parrot, the DHCP server grants the client with an IP address which is like 192.168.1.x.
 
 ### Ardrone_autonomy
 
