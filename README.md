@@ -47,6 +47,8 @@ The details about the implementation are in the Marker detection chapter.
 
 ## AR Drone
 
+<img src="https://dl.dropboxusercontent.com/u/52788948/IMG_20150511_171256.jpg" width="700" >
+
 ### Introduction
 
 Parrot AR.Drone is a radio controlled flying quadcopter built by the French company Parrot. The drone is designed to be controlled by mobile or tablet operating systems such as the supported iOS or Android within their respective apps.
@@ -57,14 +59,15 @@ In this project we used the **AR.drone version 2.0**, rather than the first vers
 ### Camera
 
 The AR.drone version 2.0 provides two cameras with different features:
-- Front camera: 720p sensor with 93° lens, recording up to 30fps;
-- Vertical camera: QVGA sensor with 64° lens, recording up to 60fps.
+- **Front camera**: 720p sensor with 93° lens, recording up to 30fps;
+- **Vertical camera**: QVGA sensor with 64° lens, recording up to 60fps.
 In this project we used the vertical camera to recognize the markers. An important aspect is the standard reference system of the camera, from the center of which the z axis comes out. 
 
+<img src="http://blog.wirelesszone.com/Portals/41194/images/altimeter.jpg">
 
 ### Wi-fi connection
 
-The connection between the AR.drone and the computer used for the control is created using the self-generated Wi-Fi 802.11n hotspot provided by the AR.drone. The Wi-Fi network has an ESSID usually called ardrone2_parrot, the DHCP server grants the client with an IP address which is like 192.168.1.x.
+The connection between the AR.drone and the computer used for the control is created using the self-generated **Wi-Fi 802.11n** hotspot provided by the AR.drone. The Wi-Fi network has an ESSID usually called ardrone2_parrot, the DHCP server grants the client with an IP address which is like 192.168.1.x.
 
 ### Ardrone_autonomy
 
@@ -94,7 +97,7 @@ Information received from the drone will be published to the ardrone/navdata top
 
 #### Cameras
 
-Both AR-Drone 1.0 and 2.0 are equipped with two cameras. One frontal camera pointing forward and one vertical camera pointing downward. This driver will create three topics for each drone: ardrone/image_raw, ardrone/front/image_raw and ardrone/bottom/image_raw. Each of these three are standard ROS camera interface and publish messages of type image transport. The driver is also a standard ROS camera driver, therefor if camera calibration information is provided either as a set of ROS parameters or appropriate ardrone_front.yaml and/or ardrone_bottom.yaml, the information will be published in appropriate camera_info topics.
+As we have already said both AR-Drone 1.0 and 2.0 are equipped with two cameras. One frontal camera pointing forward and one vertical camera pointing downward. This driver will create three topics for each drone: ardrone/image_raw, ardrone/front/image_raw and ardrone/bottom/image_raw. Each of these three are standard ROS camera interface and publish messages of type image transport. The driver is also a standard ROS camera driver, therefor if camera calibration information is provided either as a set of ROS parameters or appropriate ardrone_front.yaml and/or ardrone_bottom.yaml, the information will be published in appropriate camera_info topics.
 The ardrone will always contain the selected camera's video stream and information. Only one of ardrone/front or ardrone/bottom topics will be updated based on which camera is selected at the time.
 
 #### Sending Commands to AR-Drone
