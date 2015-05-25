@@ -145,7 +145,7 @@ Aruco is a minimal C++ library for Augmented Reality applications based on OpenC
 
 We also made a modify on the library deleting the code used to print on the console.
 
-<img src="http://iplimage.com/blog/wp-content/uploads/2012/02/marker.png" >
+<img src="http://iplimage.com/blog/wp-content/uploads/2012/02/marker.png" width="250" >
 
 The library relies on the use of coded markers. Each marker has an unique code indicated by the black and white colors in it. The libary detect borders, and analyzes into the rectangular regions which of them are likely to be markers. Then, a decoding is performed and if the code is valid, it is considered that the rectangle is a marker.
 
@@ -175,7 +175,7 @@ Camera calibration is the process of obtaning the fundamental parameters of a ca
 To calibrate in OpenCV we only need to show images of a chessboard panel of known dimensions.
 It should take at least five different pictures. A frontal one, and four where the border of the pattern is near the image border. By placing the pattern near the image border it will be possible to estimate accurately the camera distorsion.
 
-<img src="http://www.uco.es/investiga/grupos/ava/sites/default/files/images/calibrationimage.png">
+<img src="http://www.uco.es/investiga/grupos/ava/sites/default/files/images/calibrationimage.png" width="500">
 
 We also had to indicate the number of corners of the pattern in both axes, and the real size of the square. 
 As output, the program generates a .yml file that can be used in ArUco. 
