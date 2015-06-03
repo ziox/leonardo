@@ -6,7 +6,7 @@
 	</node>
 	<node name="marker_detector" pkg="leonardo" type="simple_detector_node">
 		<remap from="~camera" to="/ardrone/bottom/image_raw" />
-		<param name="calibration_url" value="/home/ziox/Desktop/ardrone_bottom.yaml"/>
+		<param name="calibration_url" value="$(env HOME)/Desktop/ardrone_bottom.yaml"/>
 		<param name="marker_size" value="0.100"/>
 	</node>
 	<node name="odometry" pkg="leonardo" type="odometry_node">

@@ -14,21 +14,8 @@
 #include <string>
 #include <cmath>
 
-/***
-!!!!
-
-Trasformazione di un punto da A a W
-
-P_W = H_W->A * P_A
-
-!!!!
-***/
-
-// Input
 ros::Subscriber odometry_topic;
 ros::Subscriber markers_topic;
-
-// Output
 ros::Publisher estimate_topic;
 
 tf::Transform the_tf_odom;
@@ -52,12 +39,7 @@ struct Marker
     bool used;
 };
 
-//Marker the_marker_23;
-// Marker the_marker_428(0, 0);
-// Marker the_marker_341(0, 2.7);
-// Marker the_marker_985(2, 0);
 Marker the_marker_428(0, 0);
-// Marker the_marker_341(0.7, 2.7);
 Marker the_marker_341(0, 0);
 Marker the_marker_985(2, 0);
 
@@ -65,7 +47,6 @@ auto the_markers = std::vector<Marker*> {&the_marker_428, &the_marker_341, &the_
 
 void process_odometry(geometry_msgs::TransformStamped odometry_msg)
 {
-    // tf::transformStampedMsgToTF(odometry_msg, the_tf_odom_to_drone);
     tf::transformMsgToTF(odometry_msg.transform, the_tf_odom_to_drone);
 }
 
@@ -82,7 +63,6 @@ void process_marker(geometry_msgs::TransformStamped camera_to_marker_msg)
     }
     else if ("marker_985" == camera_to_marker_msg.child_frame_id)
     {
-        ROS_ERROR("985!");
         marker = &the_marker_985;
     }
 
@@ -91,8 +71,6 @@ void process_marker(geometry_msgs::TransformStamped camera_to_marker_msg)
     tf::StampedTransform tf_camera_to_marker;
     tf::transformStampedMsgToTF(camera_to_marker_msg, tf_camera_to_marker);
     tf::Transform tf_marker_to_drone = (tf_drone_to_camera * tf_camera_to_marker).inverse();
-
-    // marker->tf_to_drone = tf_marker_to_drone;
 
     tf::Vector3 position = tf_marker_to_drone.getOrigin();
     tf::Quaternion orientation = tf_marker_to_drone.getRotation();
@@ -112,19 +90,6 @@ void process_marker(geometry_msgs::TransformStamped camera_to_marker_msg)
 
     marker->tf_to_drone.setOrigin(position);
     marker->tf_to_drone.setRotation(orientation);
-
-    // ROS_ERROR("the_marker_23 = (%f, %f, %f)",
-    //         marker->position.m_floats[0],
-    //         marker->position.m_floats[1],
-    //         marker->position.m_floats[2]);
-
-    // static tf::TransformBroadcaster broadcaster;
-    // broadcaster.sendTransform(
-    //     tf::StampedTransform(
-    //         tf::Transform(marker->orientation , marker->position),
-    //         marker->time,
-    //         "/map",
-    //         "/the_marker_23_drone"));
 }
 
 void publish_estimate()
@@ -160,16 +125,6 @@ void estimate_location()
     {
         if (!marker->used)
         {
-            // tf::Vector3 position = tf_drone.getOrigin();
-            // tf::Quaternion orientation = tf_drone.getRotation();
-
-            // position = (1.0 - the_marker_23.sigma) * position + the_marker_23.sigma * the_marker_23.tf_to_drone.getPosition();
-            // orientation = orientation.slerp(the_marker_23.tf_to_drone.getOrientation(), 0.1);
-
-            // // feedback
-            // tf_estimate = tf::Transform(estimate_rotation, estimate_position);
-            // the_tf_odom = tf_drone * tf_odometry.inverse();
-
             the_tf_odom = marker->absolute_position * marker->tf_to_drone * the_tf_odom_to_drone.inverse();
             the_tf_estimate = marker->absolute_position * marker->tf_to_drone;
             marker->used = true;
@@ -219,6 +174,3 @@ int main(int argc, char * argv[])
 
     return 0;
 }
-
-
-

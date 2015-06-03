@@ -10,7 +10,6 @@ ros::Publisher cmd_vel_topic;
 ros::Publisher command_topic;
 
 bool running = true;
-bool zeroing = false;
 
 void terminate(int sig)
 {
@@ -72,8 +71,6 @@ void process_keydown(keyboard::Key key)
         command_topic.publish(cmd);
         break;
     case 122:
-        cmd.data = zeroing ? "end zero" : "start zero";
-        zeroing = !zeroing;
         cmd.data = "zero";
         command_topic.publish(cmd);
         break;
