@@ -100,7 +100,7 @@ void initialize_transforms(const ros::NodeHandle & handle)
 
 int main(int argc, char* argv[])
 {
-    ros::init(argc, argv, "schetto_ctrl");
+    ros::init(argc, argv, "controller");
 
     ros::NodeHandle handle("~");
     double kP = 0.2;
