@@ -45,11 +45,6 @@ The details about the implementation are in the Marker detection chapter.
 
 <img src="https://dl.dropboxusercontent.com/u/52788948/Marker%20navigation.PNG" >
 
-### Filtering
-
-- Filtraggio
-- eventuale virtuale machine
-
 ## AR Drone
 
 <img src="https://dl.dropboxusercontent.com/u/52788948/IMG_20150511_171256.jpg" width="700" >
@@ -192,6 +187,8 @@ As output, the program generates a .yml file that can be used in ArUco.
 ## Project Architecture
 
 (block diagram)
+
+(TODO classes vs actor model)
 
 ### Marker Detector
 
