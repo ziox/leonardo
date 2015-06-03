@@ -1,5 +1,7 @@
 # Leonardo
 
+<img src=http://www.volarecon.it/ridimensiona-dicodici.jpg width="850">
+
 ## Introduction
 
 Here are overviews of the operating system, software and concepts used in the project.
@@ -19,6 +21,8 @@ In this project we used the distribution known as Lubuntu. It's a fast and light
 ROS is a flexible framework for writing robot software. It is a collection of tools, libraries, and conventions that aim to simplify the task of creating complex and robust robot behavior across a wide variety of robotic platforms.
 There are different versions of ROS, for the project we used ROS Indigo.
 
+<img src="https://dl.dropboxusercontent.com/u/52788948/screenshot.png" width="800">
+
 #### Core components
 
 - **Roscore**: Collection of nodes and programs that are pre-requisites of a ROS-based system. Must have a roscore running in order for ROS nodes to communicate.
@@ -31,7 +35,7 @@ There are different versions of ROS, for the project we used ROS Indigo.
 
 Rviz is a 3D visualizer for displaying sensor data and state information from ROS. Display live representations of sensor values coming over ROS Topics including camera data, infrared distance measurements, sonar data, and more.
 
-//SCREENSHOT
+<img src="https://dl.dropboxusercontent.com/u/52788948/Screenshot%20from%202015-06-03%2020_32_12.png" width="800">
 
 ### Marker based navigation
 
@@ -40,6 +44,7 @@ topological path consisting of a sequence of visual markers.
 The details about the implementation are in the Marker detection chapter.
 
 <img src="https://dl.dropboxusercontent.com/u/52788948/Marker%20navigation.PNG" >
+
 ### Filtering
 
 - Filtraggio
