@@ -31,7 +31,7 @@ There are different versions of ROS, for the project we used ROS Indigo.
 
 Rviz is a 3D visualizer for displaying sensor data and state information from ROS. Display live representations of sensor values coming over ROS Topics including camera data, infrared distance measurements, sonar data, and more.
 
-//SCREENSHOT
+<img src="https://dl.dropboxusercontent.com/u/52788948/Screenshot%20from%202015-06-03%2020_32_12.png" width="800">
 
 ### Marker based navigation
 
