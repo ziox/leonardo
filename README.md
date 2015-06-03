@@ -66,7 +66,7 @@ In this project we used the **AR.drone version 2.0**, rather than the first vers
 The AR.drone version 2.0 provides two cameras with different features:
 - **Front camera**: 720p sensor with 93° lens, recording up to 30fps;
 - **Vertical camera**: QVGA sensor with 64° lens, recording up to 60fps.
-In this project we used the vertical camera to recognize the markers. An important aspect is the standard reference system of the camera, from the center of which the z axis comes out. 
+In this project we used the vertical camera to recognize the markers. An important aspect is the standard reference system of the camera, from the center of which the z axis comes out.
 
 <img src="http://blog.wirelesszone.com/Portals/41194/images/altimeter.jpg">
 
@@ -145,7 +145,7 @@ ARToolKit is a software library for building Augmented Reality applications. The
 
 ### Aruco
 
-Working on the project we found a better solution to the marker detection provided by the Aruco library. 
+Working on the project we found a better solution to the marker detection provided by the Aruco library.
 Aruco is a minimal C++ library for Augmented Reality applications based on OpenCv developed by the University of Cordoba.
 
 We also made a modify on the library deleting the code used to print on the console.
@@ -173,7 +173,7 @@ The library main classes are:
 
 #### OpenCV
 OpenCV (Open Source Computer Vision) is a library of programming functions for realtime computer vision. It uses a BSD license and hence it's free for both academic and commercial use. It has C++, C, Python and Java (Android) interfaces.
-   
+
 #### Camera calibration
 
 Camera calibration is the process of obtaning the fundamental parameters of a camera. These parameter allows us to determine where a 3D point in the space projects in the camera sensor.
@@ -182,27 +182,68 @@ It should take at least five different pictures. A frontal one, and four where t
 
 <img src="http://www.uco.es/investiga/grupos/ava/sites/default/files/images/calibrationimage.png" width="500">
 
-We also had to indicate the number of corners of the pattern in both axes, and the real size of the square. 
-As output, the program generates a .yml file that can be used in ArUco. 
+We also had to indicate the number of corners of the pattern in both axes, and the real size of the square.
+As output, the program generates a .yml file that can be used in ArUco.
 
 
 
 
 
-## Architettura
+## Project Architecture
 
-- UML? (Poco)
-- Schema a blocchi
+(block diagram)
 
-## Progetto
-(descrizione di quello che boh?)
+### Marker Detector
 
-- Teleop
-- Aruco Marker Detector
-- Odometry
-- Localization
-- Controller
+main.cpp:
+- read calibration
+- load SimpleDetector
+
+
+SimpleDetector:
+- prende il feed della bottom camera
+- identifica la presenza di un marker
+- publish la "pose" del marker e il suo ID alle altre componenti
+
+
+### Odometry Node
+
+- read navdata
+- publish odometry
+
+
+### Localization Node
+
+- contiene una mappa dei marker noti
+- read odometry
+- se compare un marker, corregge l'odometria
+- publish estimate position
+
+
+### Path Planner Node
+
+- contiene una lista di "pose" nello spazio
+- profilo di moto
+- publish set-point
+
+
+### Control Node
+
+- read estimate
+- stima velocità (+ filtraggio)
+- controllore PD (con saturazione?)
+
+
+### Teleop Node
+
+- keyboard (nodo ros)
+- permette all'utente di comandare il drone manualmente
+- coordina i nodi di controllo/odometria/path_planner
+
+(descrizione dei possibili comandi)
+(keyboard picture)
+
 
 ## Conclusioni
 
-conclusione
+conclusione!
