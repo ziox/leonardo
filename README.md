@@ -1,5 +1,7 @@
 # Leonardo
 
+<img src=http://www.volarecon.it/ridimensiona-dicodici.jpg width="850">
+
 ## Introduction
 
 Here are overviews of the operating system, software and concepts used in the project.
@@ -18,6 +20,8 @@ In this project we used the distribution known as Lubuntu. It's a fast and light
 
 ROS is a flexible framework for writing robot software. It is a collection of tools, libraries, and conventions that aim to simplify the task of creating complex and robust robot behavior across a wide variety of robotic platforms.
 There are different versions of ROS, for the project we used ROS Indigo.
+
+<img src="https://dl.dropboxusercontent.com/u/52788948/screenshot.png" width="800">
 
 #### Core components
 
