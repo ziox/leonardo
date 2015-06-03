@@ -186,7 +186,7 @@ As output, the program generates a .yml file that can be used in ArUco.
 
 ## Project Architecture
 
-(block diagram)
+<img src="https://dl.dropboxusercontent.com/u/52788948/Architettura.png">
 
 (TODO classes vs actor model)
 
