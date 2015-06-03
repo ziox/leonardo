@@ -44,6 +44,7 @@ topological path consisting of a sequence of visual markers.
 The details about the implementation are in the Marker detection chapter.
 
 <img src="https://dl.dropboxusercontent.com/u/52788948/Marker%20navigation.PNG" >
+
 ### Filtering
 
 - Filtraggio
