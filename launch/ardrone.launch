@@ -1,0 +1,31 @@
+<launch>
+	<node pkg="tf" type="static_transform_publisher" name="base_to_camera" args="0 0 0 1.57 3.14 0 fake_drone fake_camera 100"/>
+	<node name="keyboard" pkg="keyboard" type="keyboard"/>
+	<node name="teleop" pkg="leonardo" type="teleop_node">
+		<remap from="~command" to="/leonardo/command"/>
+	</node>
+	<node name="marker_detector" pkg="leonardo" type="simple_detector_node">
+		<remap from="~camera" to="/ardrone/bottom/image_raw" />
+		<param name="calibration_url" value="/home/ziox/Desktop/ardrone_bottom.yaml"/>
+		<param name="marker_size" value="0.100"/>
+	</node>
+	<node name="odometry" pkg="leonardo" type="odometry_node">
+		<remap from="~odometry" to="/leonardo/odometry"/>
+		<remap from="~command" to="/leonardo/command"/>
+	</node>
+	<node name="localization" pkg="leonardo" type="localization_node">
+		<remap from="~odometry" to="/leonardo/odometry"/>
+		<remap from="~estimate" to="/leonardo/estimate"/>
+	</node>
+	<node name="path_planner" pkg="leonardo" type="path_planner_node">
+		<remap from="~command" to="/leonardo/command"/>
+		<remap from="~set_point" to="/leonardo/set_point"/>
+	</node>
+	<node name="schetto_ctrl" pkg="leonardo" type="schetto_ctrl_node">
+		<remap from="~estimate" to="/leonardo/estimate"/>
+		<remap from="~set_point" to="/leonardo/set_point"/>
+		<remap from="~command" to="/leonardo/command"/>
+		<param name="kp" value="0.20"/>
+		<param name="kd" value="0.20"/>
+	</node>
+</launch>
