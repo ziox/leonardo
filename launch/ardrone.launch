@@ -21,7 +21,7 @@
 		<remap from="~command" to="/leonardo/command"/>
 		<remap from="~set_point" to="/leonardo/set_point"/>
 	</node>
-	<node name="schetto_ctrl" pkg="leonardo" type="schetto_ctrl_node">
+	<node name="control" pkg="leonardo" type="control_node">
 		<remap from="~estimate" to="/leonardo/estimate"/>
 		<remap from="~set_point" to="/leonardo/set_point"/>
 		<remap from="~command" to="/leonardo/command"/>

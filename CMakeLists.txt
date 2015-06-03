@@ -46,8 +46,8 @@ target_link_libraries(path_planner_node
   ${catkin_LIBRARIES}
 )
 
-add_executable(schetto_ctrl_node src/controller_node.cpp)
-target_link_libraries(schetto_ctrl_node
+add_executable(control_node src/controller_node.cpp)
+target_link_libraries(control_node
 	${catkin_LIBRARIES}
 )
 
