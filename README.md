@@ -1,6 +1,6 @@
 # Leonardo
 
-<img src=http://www.volarecon.it/ridimensiona-dicodici.jpg width="850">
+<img src=http://www.volarecon.it/ridimensiona-dicodici.jpg width="850" title="Macchina volante di Leonardo">
 
 ## Introduction
 
@@ -21,7 +21,7 @@ In this project we used the distribution known as Lubuntu. It's a fast and light
 ROS is a flexible framework for writing robot software. It is a collection of tools, libraries, and conventions that aim to simplify the task of creating complex and robust robot behavior across a wide variety of robotic platforms.
 There are different versions of ROS, for the project we used ROS Indigo.
 
-<img src="https://dl.dropboxusercontent.com/u/52788948/screenshot.png" width="800">
+<img src="https://dl.dropboxusercontent.com/u/52788948/screenshot.png" width="800" title="Screenshot ROS">
 
 #### Core components
 
@@ -35,7 +35,7 @@ There are different versions of ROS, for the project we used ROS Indigo.
 
 Rviz is a 3D visualizer for displaying sensor data and state information from ROS. Display live representations of sensor values coming over ROS Topics including camera data, infrared distance measurements, sonar data, and more.
 
-<img src="https://dl.dropboxusercontent.com/u/52788948/Screenshot%20from%202015-06-03%2020_32_12.png" width="800">
+<img src="https://dl.dropboxusercontent.com/u/52788948/Screenshot%20from%202015-06-03%2020_32_12.png" width="800" title="Screenshot Rviz">
 
 ### Marker based navigation
 
@@ -43,11 +43,11 @@ The core problem of the project is the navigation of an ARDrone based on marker.
 topological path consisting of a sequence of visual markers.
 The details about the implementation are in the Marker detection chapter.
 
-<img src="https://dl.dropboxusercontent.com/u/52788948/Marker%20navigation.PNG" >
+<img src="https://dl.dropboxusercontent.com/u/52788948/Marker%20navigation.PNG" title="Marker path" >
 
 ## AR Drone
 
-<img src="https://dl.dropboxusercontent.com/u/52788948/IMG_20150511_171256.jpg" width="700" >
+<img src="https://dl.dropboxusercontent.com/u/52788948/IMG_20150511_171256.jpg" width="700" title="AR Drone with marker">
 
 ### Introduction
 
@@ -63,7 +63,7 @@ The AR.drone version 2.0 provides two cameras with different features:
 - **Vertical camera**: QVGA sensor with 64° lens, recording up to 60fps.
 In this project we used the vertical camera to recognize the markers. An important aspect is the standard reference system of the camera, from the center of which the z axis comes out.
 
-<img src="http://blog.wirelesszone.com/Portals/41194/images/altimeter.jpg">
+<img src="http://blog.wirelesszone.com/Portals/41194/images/altimeter.jpg" title="AR drone bottom">
 
 ### Wi-fi connection
 
@@ -145,13 +145,13 @@ Aruco is a minimal C++ library for Augmented Reality applications based on OpenC
 
 We also made a modify on the library deleting the code used to print on the console.
 
-<img src="http://iplimage.com/blog/wp-content/uploads/2012/02/marker.png" width="250" >
+<img src="http://iplimage.com/blog/wp-content/uploads/2012/02/marker.png" width="250" title="Marker 23">
 
 The library relies on the use of coded markers. Each marker has an unique code indicated by the black and white colors in it. The libary detect borders, and analyzes into the rectangular regions which of them are likely to be markers. Then, a decoding is performed and if the code is valid, it is considered that the rectangle is a marker.
 
 The codification included into the marker is a slighly modified version of the Hamming Code. It has a total of 25 bits didived in 5 rows of 5 bits each. So, we have 5 words of 5 bits. Each word, contains only 2 bits of real information, the rest is for  and error detection/correction (error correction is yet to be done). As a conclusion, a marker contains 10 bits of real information wich allows 1024 different markers.
 
-<img src="https://raw.githubusercontent.com/jchillerup/rokoko/master/aruco/rokoko/2a0board/2a0board.png" >
+<img src="https://raw.githubusercontent.com/jchillerup/rokoko/master/aruco/rokoko/2a0board/2a0board.png" title="Markers table">
 
 
 #### ArUco classes
@@ -175,7 +175,7 @@ Camera calibration is the process of obtaning the fundamental parameters of a ca
 To calibrate in OpenCV we only need to show images of a chessboard panel of known dimensions.
 It should take at least five different pictures. A frontal one, and four where the border of the pattern is near the image border. By placing the pattern near the image border it will be possible to estimate accurately the camera distorsion.
 
-<img src="http://www.uco.es/investiga/grupos/ava/sites/default/files/images/calibrationimage.png" width="500">
+<img src="http://www.uco.es/investiga/grupos/ava/sites/default/files/images/calibrationimage.png" width="500" title="Calibration">
 
 We also had to indicate the number of corners of the pattern in both axes, and the real size of the square.
 As output, the program generates a .yml file that can be used in ArUco.
@@ -183,7 +183,7 @@ As output, the program generates a .yml file that can be used in ArUco.
 
 ## Project Architecture
 
-<img src="https://dl.dropboxusercontent.com/u/52788948/Architettura.png">
+<img src="https://dl.dropboxusercontent.com/u/52788948/Architettura.png" title="Project architecture">
 
 (TODO classes vs actor model)
 
@@ -332,7 +332,7 @@ The functions provided by this node are:
 In this node is used the keyboard node provided by ROS.
 
 #### Command list
-<img src="https://dl.dropboxusercontent.com/u/52788948/PicsArt_1433772654507.jpg">
+<img src="https://dl.dropboxusercontent.com/u/52788948/PicsArt_1433772654507.jpg" title="Keyboard">
 
 - **0-9** -> pose in the space;
 - **q** -> quit:
