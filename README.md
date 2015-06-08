@@ -193,7 +193,7 @@ This function is made with two file that could be found in the folder src/detect
 
 ####main.cpp
 
-In this file are done these different functions:
+The functions provided by this node are:
 - Loading the file containing the bottom camera calibration (camera.yaml);
 - Defining marker size;
 - Creating a detector (as specified in the file simple_detector.cpp);
@@ -267,12 +267,26 @@ This node subscribes to:
 And publishes on:
 - estimate_topic -> topic where the estimate position is published.
 
+
 ### Path Planner Node
 
-- contiene una lista di "pose" nello spazio
-- profilo di moto
-- publish set-point
+The code related to this node is contained in the file  path_planner_node.cpp that could be found in the folder src.
 
+The functions provided by this node are:
+- List of pose -> list of positions in the space;
+- Motion profile:
+    -   We used a sin function to implement the motion profile;
+    -   It's used to avoid abrupt movements of drone;
+-   Publishing set-point:
+    - Everytime is published the set-point for the drone so that it could follow the motion profile;
+
+######Publish & Subscribe
+
+This node subscribes to:
+- command_topic -> topic where the commands are published.
+
+And publishes on:
+- set_point_topic -> topic where the set_point is published.
 
 ### Control Node
 
