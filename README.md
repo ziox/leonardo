@@ -240,15 +240,23 @@ And publishes on:
 - takeoff_topic -> topic where takeoff command is published;
 - land_topic -> topic where land command is published.
 
-
-
 ### Localization Node
 
-- contiene una mappa dei marker noti
-- read odometry
-- se compare un marker, corregge l'odometria
-- publish estimate position
+The code related to this node is contained in the file localization_node.cpp that could be found in the folder src.
 
+The functions provided by this node are:
+- Marker map:
+    - List of the markers with relative position on the map:
+        - Marker 428(0, 0);
+        - Marker 341(0, 0);
+        - Marker 985(2, 0);
+- Reading odometry:
+    - The odometry published by the Odometry Node is read and transformed in the_tf_odom_to_drone;
+- Odometry correction:
+    - If one of the known markers is found the odometry is corrected with the known position provided by the map;
+- Estimating position:
+    - Estimated position is calculated by multiplying the_tf_odom with the_tf_odom_to_drone;
+- Publishing estimate position.
 
 ### Path Planner Node
 
