@@ -258,6 +258,15 @@ The functions provided by this node are:
     - Estimated position is calculated by multiplying the_tf_odom with the_tf_odom_to_drone;
 - Publishing estimate position.
 
+######Publish & Subscribe
+
+This node subscribes to:
+- odometry_topic -> topic where the odometry is published;
+- markers_topic -> topic where markers are published.
+
+And publishes on:
+- estimate_topic -> topic where the estimate position is published.
+
 ### Path Planner Node
 
 - contiene una lista di "pose" nello spazio
