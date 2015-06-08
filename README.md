@@ -1,8 +1,8 @@
 # Leonardo
+###Università degli Studi di Bergamo - Dipartimento di Ingegneria gestionale, dell'informazione e della produzione
+###Corso Robotica - Professor Davide Brugali
 
-##Robotics Project: AR Drone Parrot - Marker Based Navigation - bottom camera
-##Università degli Studi di Bergamo - Dipartimento di Ingegneria gestionale, dell'informazione e della produzione
-##Corso Robotica - Professor Davide Brugali
+####Robotics Project: AR Drone Parrot - Marker Based Navigation - bottom camera
 
 <img src=http://www.volarecon.it/ridimensiona-dicodici.jpg width="850" title="Macchina volante di Leonardo">
 
