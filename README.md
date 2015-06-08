@@ -288,11 +288,39 @@ This node subscribes to:
 And publishes on:
 - set_point_topic -> topic where the set_point is published.
 
+
 ### Control Node
 
-- read estimate
-- stima velocità (+ filtraggio)
-- controllore PD (con saturazione?)
+The code related to this node is contained in the file controller_node.cpp that could be found in the folder src.
+
+The functions provided by this node are:
+- Controlling:
+    - Read the estimate position published by the localization node;
+    - Read the set_point published by the path planner;
+    - Compute the twist control;
+    - Estimate the velocity as the ratio between space and time:
+        - Due to the variability of the result, the speed is filtered with a moving average filter;
+    - Finally the control is made with a PD conrol;
+- Command:
+    - The commands processed by the node are:
+        - Takeoff -> the control is disabled and an empty message is published on the takeoff_topic;
+        - Land -> hover is done and an empty message is published on the land_topic;
+        - Hover -> hover is done;
+        - Toggle_ctrl -> if not already active the control is activated;
+- Hovering:
+    - This function is used to ensure a stable position for the drone and to have a vertical land.
+
+####Publish & Subscribe
+This node subscribe:
+- estimate_topic -> topic where are published messages with the estimated position;
+- set_point_topic -> topic where are published messages with the set point for the drone;
+- command_topic -> topic where are published messages with the command sent to the drone.
+
+And publish:
+- twist_topic -> topic where are published messages with the twist;
+- land_topic -> topic where are published landing messages for thedrone;
+- takeoff_topic -> topic where are published takeoff messages for the drone.
+
 
 
 ### Teleop Node
