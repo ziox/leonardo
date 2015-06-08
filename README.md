@@ -356,4 +356,10 @@ This node publish on:
 
 ## Conclusioni
 
-conclusione!
+The project works very well in fact the drone reaches properly all positions commanded. However during the development we have encountered many problems, the biggest are:
+- Wi-Fi connection:
+    - The Wi-Fi connection between the PC with ROS and the drone is very unstable overall for the interference with other Wi-Fi networks;
+    - Obviously we could solve this problem using the drone in an interference-free place.
+- Odometry:
+    - As we know the data from the odometry still good only for small periods of time;
+    - To obviate this problem we introduce the zero function (as described in the odometry node section).
