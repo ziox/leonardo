@@ -181,9 +181,6 @@ We also had to indicate the number of corners of the pattern in both axes, and t
 As output, the program generates a .yml file that can be used in ArUco.
 
 
-
-
-
 ## Project Architecture
 
 <img src="https://dl.dropboxusercontent.com/u/52788948/Architettura.png">
@@ -192,21 +189,57 @@ As output, the program generates a .yml file that can be used in ArUco.
 
 ### Marker Detector
 
-main.cpp:
-- read calibration
-- load SimpleDetector
+This function is made with two file that could be found in the folder src/detector. 
 
+####main.cpp
 
-SimpleDetector:
-- prende il feed della bottom camera
-- identifica la presenza di un marker
-- publish la "pose" del marker e il suo ID alle altre componenti
+In this file are done these different functions:
+- Loading the file containing the bottom camera calibration (camera.yaml);
+- Defining marker size;
+- Creating a detector (as specified in the file simple_detector.cpp);
+- Subscribing to the camera topic;
+- Calculating marker transform and publish it.
 
+######Publish & Subscribe
+
+This node subscribes to:
+- camera topic -> topic where are published frames from the camera.
+
+And publishes:
+- Marker transform.
+
+####simple_detector.cpp
+
+This file mainly provide the detection function, using aruco library, the step are:
+- Take the frame from the bottom camera;
+- Detect a marker;
+- Return the marker pose (position and orientation) and the the marker ID to the other components.
 
 ### Odometry Node
 
-- read navdata
-- publish odometry
+The code related to this node is contained in the file odometry_node.cpp that could be found in the folder src.
+The functions provided by this node are:
+- Reading and processing navdata:
+    - Transforming roll, pitch and yaw data from radians to degree;
+    - Calculating x and y velocity [mm/s];
+    - Calculating altitude [mm];
+    - Calculating orientation and position;
+- Publishing odometry using publish_odometry() function;
+- Handles command "zero" resetting the position, this command is used when the quality of the odometry starts degrading.
+
+######Publish & Subscribe
+
+This node subscribes to:
+- twist_topic -> topic where the twist for the drone is published;
+- navdata_topic -> topic where navdatas are published;
+- command_topic -> topic where commands are published.
+
+And publishes on:
+- odometry_topic -> topic where the odometry is published;
+- cmd_vel_topic -> topic where velocity are published;
+- takeoff_topic -> topic where takeoff command is published;
+- land_topic -> topic where land command is published.
+
 
 
 ### Localization Node
