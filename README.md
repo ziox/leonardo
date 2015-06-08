@@ -316,21 +316,42 @@ This node subscribe:
 - set_point_topic -> topic where are published messages with the set point for the drone;
 - command_topic -> topic where are published messages with the command sent to the drone.
 
-And publish:
+And publish on:
 - twist_topic -> topic where are published messages with the twist;
 - land_topic -> topic where are published landing messages for thedrone;
 - takeoff_topic -> topic where are published takeoff messages for the drone.
 
-
-
 ### Teleop Node
 
-- keyboard (nodo ros)
-- permette all'utente di comandare il drone manualmente
-- coordina i nodi di controllo/odometria/path_planner
+The code related to this node is contained in the file teleop_node.cpp that could be found in the folder src.
 
-(descrizione dei possibili comandi)
-(keyboard picture)
+The functions provided by this node are:
+- Commanding manually the drone (see image for the details of the commands);
+- Coordinating odometry, control and path_planner nodes.
+
+In this node is used the keyboard node provided by ROS.
+
+#### Command list
+<img src="https://dl.dropboxusercontent.com/u/52788948/PicsArt_1433772654507.jpg">
+
+- **0-9** -> pose in the space;
+- **q** -> quit:
+    - Used in case of emergency;
+    - The drone lands;
+    - Deactivate the control node;
+- **l** -> land;
+- **t** -> take-off;
+- **z** -> zero (as specified in Odometry node section);
+- **Arrows** -> moving the drone over X and Y axes;
+- **w-s** -> moving the drone over Z axe (adjust the altitude);
+- **a-d** -> yaw.
+
+####Publish & Subscribe
+
+This node publish on:
+- cmd_vel_topic -> topic where are published messages with the command velocity;
+- command_topic -> topic where are published messages with the commands for the drone.
+
 
 
 ## Conclusioni
