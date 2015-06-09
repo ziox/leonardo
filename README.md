@@ -146,7 +146,7 @@ One of the main problem in marker based navigation is to identify a marker using
 
 ### ARToolkit
 
-ARToolKit is a software library for building Augmented Reality applications. These are applications that involve the overlay of virtual imagery on the real world. We used this library only at the beginning of the project, but...
+ARToolKit is a software library for building Augmented Reality applications. These are applications that involve the overlay of virtual imagery on the real world. We used this library only at the beginning of the project.
 
 ### Aruco
 
