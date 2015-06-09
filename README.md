@@ -351,7 +351,7 @@ In this node is used the keyboard node provided by ROS.
     - Deactivate the control node;
 - **L** -> land;
 - **T** -> take-off;
-- **z** -> zero (as specified in Odometry node section);
+- **Z** -> zero (as specified in Odometry node section);
 - **Arrows** -> moving the drone over X and Y axes;
 - **W-S** -> moving the drone over Z axe (adjust the altitude);
 - **A-D** -> yaw.
