@@ -345,16 +345,16 @@ In this node is used the keyboard node provided by ROS.
 <img src="https://dl.dropboxusercontent.com/u/52788948/PicsArt_1433772654507.jpg" title="Keyboard">
 
 - **0-9** -> pose in the space;
-- **q** -> quit:
+- **Q** -> quit:
     - Used in case of emergency;
     - The drone lands;
     - Deactivate the control node;
-- **l** -> land;
-- **t** -> take-off;
+- **L** -> land;
+- **T** -> take-off;
 - **z** -> zero (as specified in Odometry node section);
 - **Arrows** -> moving the drone over X and Y axes;
-- **w-s** -> moving the drone over Z axe (adjust the altitude);
-- **a-d** -> yaw.
+- **W-S** -> moving the drone over Z axe (adjust the altitude);
+- **A-D** -> yaw.
 
 ####Publish & Subscribe
 
