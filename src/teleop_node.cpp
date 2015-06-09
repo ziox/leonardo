@@ -3,18 +3,10 @@
 #include <keyboard/Key.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/String.h>
-#include <csignal>
 
 
 ros::Publisher cmd_vel_topic;
 ros::Publisher command_topic;
-
-bool running = true;
-
-void terminate(int sig)
-{
-    running = false;
-}
 
 struct
 {
@@ -29,7 +21,6 @@ struct
 } the_key_status;
 
 bool active = true;
-
 
 
 void process_keydown(keyboard::Key key)
@@ -55,7 +46,7 @@ void process_keydown(keyboard::Key key)
     case 113: // q
         cmd.data = "land";
         command_topic.publish(cmd);
-        running = false;
+        ros::shutdown();
         break;
     case 48:
     case 49:
@@ -136,7 +127,6 @@ void process_keyup(keyboard::Key key)
 int main(int argc, char* argv[])
 {
     ros::init(argc, argv, "tele_poppe");
-    std::signal(SIGINT, terminate);
     ros::NodeHandle handle("~");
 
     cmd_vel_topic = handle.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
@@ -148,7 +138,7 @@ int main(int argc, char* argv[])
     const double POWER = 0.20;
 
     ros::Rate loop_rate(120); // Hz
-    while(running)
+    while (ros::ok())
     {
         double x = 0;
         double y = 0;
