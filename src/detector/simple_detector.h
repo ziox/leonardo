@@ -1,23 +1,15 @@
 #ifndef SIMPLE_DETECTOR_H
 #define SIMPLE_DETECTOR_H
 
+#include "detector.h"
 #include <aruco/aruco.h>
-#include <vector>
-#include <string>
 
-struct Marker
-{
-    std::string id;
-    cv::Mat position;
-    cv::Mat orientation;
-};
-
-class SimpleDetector
+class SimpleDetector : public Detector
 {
 public:
     SimpleDetector(aruco::CameraParameters camera_parameters, double marker_size);
 
-    std::vector<Marker> detect(const cv::Mat &);
+    std::vector<Marker> detect(const cv::Mat &) override;
 
 private:
     aruco::CameraParameters camera_parameters_;

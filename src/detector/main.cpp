@@ -20,7 +20,7 @@ aruco::CameraParameters loadCameraCalibration(const char * camera_calibration_ur
 namespace
 {
 
-std::unique_ptr<SimpleDetector> the_detector;
+std::unique_ptr<Detector> the_detector;
 ros::Publisher the_marker_publisher;
 
 }
@@ -41,7 +41,7 @@ int main(int argc, char * argv[])
     handle.param<double>("marker_size", marker_size, 0.05);
 
     ROS_INFO("marker size: %f", marker_size);
-    the_detector = std::unique_ptr<SimpleDetector>(new SimpleDetector(camera_parameters, marker_size));
+    the_detector = std::unique_ptr<Detector>(new SimpleDetector(camera_parameters, marker_size));
 
     image_transport::ImageTransport it(handle);
     image_transport::Subscriber image_topic = it.subscribe("camera", 1, processImage);
