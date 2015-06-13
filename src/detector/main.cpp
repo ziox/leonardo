@@ -13,8 +13,8 @@
 #include <vector>
 #include <memory>
 
-void processImage(const sensor_msgs::ImageConstPtr & msg);
-aruco::CameraParameters loadCameraCalibration(const char * camera_calibration_url);
+void process_image(const sensor_msgs::ImageConstPtr & msg);
+aruco::CameraParameters load_camera_calibration(const char * camera_calibration_url);
 
 
 namespace
@@ -35,7 +35,7 @@ int main(int argc, char * argv[])
     std::string camera_calibration_url;
     std::string ros_home(getenv("HOME"));
     handle.param<std::string>("calibration_url", camera_calibration_url, ros_home + "/.ros/camera_info/camera.yaml");
-    aruco::CameraParameters camera_parameters = loadCameraCalibration(camera_calibration_url.c_str());
+    aruco::CameraParameters camera_parameters = load_camera_calibration(camera_calibration_url.c_str());
 
     double marker_size;
     handle.param<double>("marker_size", marker_size, 0.05);
@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
     the_detector = std::unique_ptr<Detector>(new SimpleDetector(camera_parameters, marker_size));
 
     image_transport::ImageTransport it(handle);
-    image_transport::Subscriber image_topic = it.subscribe("camera", 1, processImage);
+    image_transport::Subscriber image_topic = it.subscribe("camera", 1, process_image);
 
     the_marker_publisher = handle.advertise<geometry_msgs::TransformStamped>("markers", 100);
 
@@ -53,7 +53,7 @@ int main(int argc, char * argv[])
     return 0;
 }
 
-void processImage(const sensor_msgs::ImageConstPtr & msg)
+void process_image(const sensor_msgs::ImageConstPtr & msg)
 {
     static tf::TransformBroadcaster tf_broadcaster;
     cv_bridge::CvImagePtr image_bridge = cv_bridge::toCvCopy(msg);
@@ -90,7 +90,7 @@ bool exists(const char * file_name)
     return std::ifstream(file_name).good();
 }
 
-aruco::CameraParameters loadCameraCalibration(const char * camera_calibration_url)
+aruco::CameraParameters load_camera_calibration(const char * camera_calibration_url)
 {
     aruco::CameraParameters camera_parameters;
     if (exists(camera_calibration_url))
