@@ -1,172 +1,193 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <keyboard/Key.h>
-#include <std_msgs/Empty.h>
 #include <std_msgs/String.h>
 
 
-ros::Publisher cmd_vel_topic;
-ros::Publisher command_topic;
-
-struct
+class TeleOp
 {
-    bool up;
-    bool down;
-    bool forward;
-    bool backward;
-    bool left;
-    bool right;
-    bool cw;
-    bool acw;
-} the_key_status;
-
-bool active = true;
-
-
-void process_keydown(keyboard::Key key)
-{
-    // ROS_ERROR("keydown: %d", key.code);
-
-    std_msgs::String cmd;
-    switch(key.code)
+public:
+    TeleOp(ros::NodeHandle& nh)
+        : keydown_topic(nh.subscribe<keyboard::Key>("/keyboard/keydown", 10, &TeleOp::onKeyDown, this))
+        , keyup_topic(nh.subscribe<keyboard::Key>("/keyboard/keyup", 10, &TeleOp::onKeyUp, this))
+        , cmd_vel_topic(nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10))
+        , command_topic(nh.advertise<std_msgs::String>("command", 10))
+        , active(true)
     {
-    case 101: // e
-        cmd.data = "toggle_ctrl";
-        command_topic.publish(cmd);
-        active = !active;
-        break;
-    case 108: // l
-        cmd.data = "land";
-        command_topic.publish(cmd);
-        break;
-    case 116: // t
-        cmd.data = "takeoff";
-        command_topic.publish(cmd);
-        break;
-    case 113: // q
-        cmd.data = "land";
-        command_topic.publish(cmd);
-        ros::shutdown();
-        break;
-    case 48:
-    case 49:
-    case 50:
-    case 51:
-    case 52:
-    case 53:
-    case 54:
-    case 55:
-    case 56:
-    case 57:
-        cmd.data = std::string("point ") + std::to_string(key.code - 48);
-        command_topic.publish(cmd);
-        break;
-    case 122:
-        cmd.data = "zero";
-        command_topic.publish(cmd);
-        break;
-    case 273:
-        the_key_status.forward = true;
-        break;
-    case 274:
-        the_key_status.backward = true;
-        break;
-    case 276:
-        the_key_status.left = true;
-        break;
-    case 275:
-        the_key_status.right = true;
-        break;
-    case 119: // w
-        the_key_status.up = true;
-        break;
-    case 115: // s
-        the_key_status.down = true;
-        break;
-    case 97: // a
-        the_key_status.acw = true;
-        break;
-    case 100: // d
-        the_key_status.cw = true;
-        break;
-    }
-}
-
-void process_keyup(keyboard::Key key)
-{
-    // ROS_ERROR("keyup: %d", key.code);
-    switch(key.code)
-    {
-    case 273:
-        the_key_status.forward = false;
-        break;
-    case 274:
-        the_key_status.backward = false;
-        break;
-    case 276:
-        the_key_status.left = false;
-        break;
-    case 275:
-        the_key_status.right = false;
-        break;
-    case 119: // w
-        the_key_status.up = false;
-        break;
-    case 115: // s
-        the_key_status.down = false;
-        break;
-    case 97: // a
-        the_key_status.acw = false;
-        break;
-    case 100: // d
-        the_key_status.cw = false;
-        break;
-    }
-}
-
-int main(int argc, char* argv[])
-{
-    ros::init(argc, argv, "tele_poppe");
-    ros::NodeHandle handle("~");
-
-    cmd_vel_topic = handle.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
-    command_topic = handle.advertise<std_msgs::String>("command", 10);
-
-    ros::Subscriber keydown_topic = handle.subscribe<keyboard::Key>("/keyboard/keydown", 10, process_keydown);
-    ros::Subscriber keyup_topic = handle.subscribe<keyboard::Key>("/keyboard/keyup", 10, process_keyup);
-
-    const double POWER = 0.20;
-
-    ros::Rate loop_rate(120); // Hz
-    while (ros::ok())
-    {
-        double x = 0;
-        double y = 0;
-        double z = 0;
-        double turn = 0;
-
-        if (the_key_status.forward) x += POWER;
-        if (the_key_status.backward) x -= POWER;
-        if (the_key_status.left) y += POWER;
-        if (the_key_status.right) y -= POWER;
-        if (the_key_status.up) z += 0.40;
-        if (the_key_status.down) z -= 0.40;
-        if (the_key_status.cw) turn -= POWER;
-        if (the_key_status.acw) turn += POWER;
-
-        geometry_msgs::Twist twist;
-        twist.linear.x = x;
-        twist.linear.y = y;
-        twist.linear.z = z;
+        twist.linear.x = 0.0;
+        twist.linear.y = 0.0;
+        twist.linear.z = 0.0;
         twist.angular.x = 0.0;
         twist.angular.y = 0.0;
-        twist.angular.z = turn;
+        twist.angular.z = 0.0;
+    }
 
+    ~TeleOp()
+    {
+        if (active)
+        {
+            toggleControl();
+        }
+        land();
+    }
+
+    void process()
+    {
         if (active)
         {
             cmd_vel_topic.publish(twist);
         }
+    }
 
+private:
+    void onKeyDown(keyboard::Key key)
+    {
+        switch (key.code)
+        {
+        case 101: // e
+            toggleControl();
+            break;
+        case 108: // l
+            land();
+            break;
+        case 116: // t
+            takeoff();
+            break;
+        case 113: // q
+            land();
+            ros::shutdown();
+            break;
+        case 48:
+        case 49:
+        case 50:
+        case 51:
+        case 52:
+        case 53:
+        case 54:
+        case 55:
+        case 56:
+        case 57:
+            setPoint(key.code - 48);
+            break;
+        case 122:
+            zero();
+            break;
+        case 273:
+            twist.linear.x += Power;
+            break;
+        case 274:
+            twist.linear.x -= Power;
+            break;
+        case 276:
+            twist.linear.y += Power;
+            break;
+        case 275:
+            twist.linear.y -= Power;
+            break;
+        case 119: // w
+            twist.linear.z += 0.40;
+            break;
+        case 115: // s
+            twist.linear.z -= 0.40;
+            break;
+        case 97: // a
+            twist.angular.z += Power;
+            break;
+        case 100: // d
+            twist.angular.z -= Power;
+            break;
+        }
+    }
+
+    void onKeyUp(keyboard::Key key)
+    {
+        switch (key.code)
+        {
+        case 273:
+            twist.linear.x -= Power;
+            break;
+        case 274:
+            twist.linear.x += Power;
+            break;
+        case 276:
+            twist.linear.y -= Power;
+            break;
+        case 275:
+            twist.linear.y += Power;
+            break;
+        case 119: // w
+            twist.linear.z -= 0.40;
+            break;
+        case 115: // s
+            twist.linear.z += 0.40;
+            break;
+        case 97: // a
+            twist.angular.z -= Power;
+            break;
+        case 100: // d
+            twist.angular.z += Power;
+            break;
+        }
+    }
+
+    void toggleControl()
+    {
+        std_msgs::String cmd;
+        cmd.data = "toggle_ctrl";
+        command_topic.publish(cmd);
+        active = !active;
+    }
+
+    void takeoff()
+    {
+        std_msgs::String cmd;
+        cmd.data = "takeoff";
+        command_topic.publish(cmd);
+    }
+
+    void land()
+    {
+        std_msgs::String cmd;
+        cmd.data = "land";
+        command_topic.publish(cmd);
+    }
+
+    void zero()
+    {
+        std_msgs::String cmd;
+        cmd.data = "zero";
+        command_topic.publish(cmd);
+    }
+
+    void setPoint(int id)
+    {
+        std_msgs::String cmd;
+        cmd.data = std::string("point ") + std::to_string(id);
+        command_topic.publish(cmd);
+    }
+
+    ros::Subscriber keydown_topic;
+    ros::Subscriber keyup_topic;
+    ros::Publisher cmd_vel_topic;
+    ros::Publisher command_topic;
+
+    bool active;
+    geometry_msgs::Twist twist;
+
+    constexpr static auto Power = 0.20;
+};
+
+
+int main(int argc, char* argv[])
+{
+    ros::init(argc, argv, "teleop");
+    ros::NodeHandle handle("~");
+    TeleOp node(handle);
+
+    ros::Rate loop_rate(120); // Hz
+    while (ros::ok())
+    {
+        node.process();
         ros::spinOnce();
         loop_rate.sleep();
     }
