@@ -57,7 +57,8 @@ void process_image(const sensor_msgs::ImageConstPtr & msg)
 {
     static tf::TransformBroadcaster tf_broadcaster;
     cv_bridge::CvImagePtr image_bridge = cv_bridge::toCvCopy(msg);
-    for (auto & marker : the_detector->detect(image_bridge->image)) {
+    for (auto & marker : the_detector->detect(image_bridge->image))
+    {
         cv::Mat rot(3, 3, CV_32FC1);
         cv::Rodrigues(marker.orientation, rot);
 
