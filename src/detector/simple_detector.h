@@ -7,21 +7,21 @@
 
 struct Marker
 {
-	std::string id;
-	cv::Mat position;
-	cv::Mat orientation;
+    std::string id;
+    cv::Mat position;
+    cv::Mat orientation;
 };
 
 class SimpleDetector
 {
 public:
-	SimpleDetector(aruco::CameraParameters camera_parameters, double marker_size);
+    SimpleDetector(aruco::CameraParameters camera_parameters, double marker_size);
 
-	std::vector<Marker> detect(const cv::Mat &);
+    std::vector<Marker> detect(const cv::Mat &);
 
 private:
-	aruco::CameraParameters camera_parameters_;
-	aruco::MarkerDetector marker_detector_;
+    aruco::CameraParameters camera_parameters_;
+    aruco::MarkerDetector marker_detector_;
     double marker_size_;
     std::vector<aruco::Marker> markers_;
 };
