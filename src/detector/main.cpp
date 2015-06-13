@@ -93,16 +93,21 @@ bool exists(const char * file_name)
 aruco::CameraParameters loadCameraCalibration(const char * camera_calibration_url)
 {
     aruco::CameraParameters camera_parameters;
-    if (exists(camera_calibration_url)) {
-        try {
+    if (exists(camera_calibration_url))
+    {
+        try
+        {
             ROS_INFO("Using camera calibration file: %s", camera_calibration_url);
             camera_parameters.readFromXMLFile(camera_calibration_url);
-        } catch (std::exception & e) {
+        }
+        catch (std::exception & e)
+        {
             ROS_WARN("Unable to load calibration file: %s", e.what());
         }
-    } else {
+    }
+    else
+    {
         ROS_WARN("Camera calibration file %s NOT found!", camera_calibration_url);
     }
-
     return camera_parameters;
 }
