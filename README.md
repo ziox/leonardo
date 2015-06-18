@@ -1,15 +1,17 @@
-# Leonardo : AR Drone marker based navigation with the bottom camera
-###Università degli Studi di Bergamo - Dipartimento di Ingegneria gestionale, dell'informazione e della produzione
-###Corso Robotica - Professor Davide Brugali
+# Project Leonardo
 
-
-####Authors
-- Nicola Pasta 0000000
-- Roberto Gazia 0000000 
-- Giuliano Breviario 1010326
-- Claudio Capelli 1010897
+**Marker based localization and navigation with a Parrot AR Drone 2.0** 
 
 <img src=http://www.volarecon.it/ridimensiona-dicodici.jpg width="850" title="Macchina volante di Leonardo">
+
+This project was developed for the Robotics course of the "Università degli Studi di Bergamo", taught by Prof. Davide Brugali.
+
+Authors
+
+ - Nicola Pasta
+ - Roberto Gazia
+ - Giuliano Breviario
+ - Claudio Capelli
 
 
 ## Introduction
