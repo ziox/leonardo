@@ -144,7 +144,6 @@ int main(int argc, char* argv[])
         double ctrl_x = kP * dx - kD * vx;
         double ctrl_y = kP * dy - kD * vy;
         double ctrl_z = dz;
-        double ctrl_rz = -angle;
 
         // ROS_ERROR("Angle:%f", angle);
         // ROS_ERROR("X:%f Y:%f Z:%f", the_tf_estimate[0].getOrigin().x(), the_tf_estimate[0].getOrigin().y(), the_tf_estimate[0].getOrigin().z());
@@ -162,10 +161,8 @@ int main(int argc, char* argv[])
             ctrl_y = std::max(std::min(ctrl_y, MAX_POWER), -MAX_POWER);
             ctrl_y = fabs(ctrl_y) > MIN_POWER ? ctrl_y : 0.0;
             ctrl_z = fabs(ctrl_z) > MIN_POWER ? ctrl_z : 0.0;
-            ctrl_rz = std::max(std::min(ctrl_rz, MAX_POWER), -MAX_POWER);
-            ctrl_rz = fabs(ctrl_rz) > MIN_POWER ? ctrl_rz : 0.0;
 
-            //ROS_ERROR("CX:%f CY:%f CZ:%f CRZ:%f", ctrl_x, ctrl_y, ctrl_z, ctrl_rz);
+            //ROS_ERROR("CX:%f CY:%f CZ:%f", ctrl_x, ctrl_y, ctrl_z);
 
             geometry_msgs::Twist twist;
             twist.linear.x = ctrl_x;
@@ -173,7 +170,7 @@ int main(int argc, char* argv[])
             twist.linear.z = ctrl_z;
             twist.angular.x = 0.0;
             twist.angular.y = 0.0;
-            twist.angular.z = 0.0; //ctrl_rz;
+            twist.angular.z = 0.0;
             twist_topic.publish(twist);
         }
 
