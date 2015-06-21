@@ -39,7 +39,7 @@ struct PathPlannerNode
             double tau  = 3.14 * the_tau / TAU_MAX;
             if (the_tau < TAU_MAX)
             {
-                percent = profile.position(tau);
+                percent = profile.position(1.0 * the_tau / TAU_MAX);
             }
 
             actual = start + (end - start) * percent;

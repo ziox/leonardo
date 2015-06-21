@@ -98,7 +98,7 @@ class SinProfile : public MotionProfile
 public:
     double position(double t) const override
     {
-        return 0.5 + std::sin(t - 1.56) / 2.0;
+        return 0.5 + std::sin(3.14 * t - 1.56) / 2.0;
     }
 };
 
