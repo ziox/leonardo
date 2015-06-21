@@ -15,9 +15,9 @@
 #include <cmath>
 
 
-struct Marker
+struct LandMark
 {
-    Marker(double x, double y)
+    LandMark(double x, double y)
         : absolute_position(tf::createIdentityQuaternion(), tf::Vector3(x, y, 0.0))
         , used(true)
     {}
@@ -34,14 +34,14 @@ struct Marker
 struct LocalizationNode
 {
     LocalizationNode(ros::NodeHandle& nh)
-        : the_marker_428(0, 0)
-        , the_marker_341(0, 0)
-        , the_marker_985(2, 0)
+        : landmark_428(0, 0)
+        , landmark_341(0, 0)
+        , landmark_985(2, 0)
         , odometry_topic(nh.subscribe<geometry_msgs::TransformStamped>("odometry", 10, &LocalizationNode::onOdometry, this))
         , markers_topic(nh.subscribe<geometry_msgs::TransformStamped>("/marker_detector/markers", 10, &LocalizationNode::onMarker, this))
         , estimate_topic(nh.advertise<geometry_msgs::TransformStamped>("odometry", 10))
     {
-        known_markers = std::vector<Marker*> {&the_marker_428, &the_marker_341, &the_marker_985};
+        known_landmarks = std::vector<LandMark*> {&landmark_428, &landmark_341, &landmark_985};
 
         // ArDrone OK
         tf_drone_to_camera = tf::Transform(tf::Quaternion(-0.7071, 0.7071, 0.0, 0.0), tf::Vector3(0.0, 0.0, 0.0));
@@ -57,7 +57,7 @@ struct LocalizationNode
         {
             the_tf_estimate = the_tf_odom * the_tf_odom_to_drone;
 
-            for (auto marker : known_markers)
+            for (auto marker : known_landmarks)
             {
                 if (!marker->used)
                 {
@@ -82,8 +82,8 @@ private:
 
     void onMarker(geometry_msgs::TransformStamped camera_to_marker_msg)
     {
-        Marker* marker = identifyMarker(camera_to_marker_msg.child_frame_id);
-        if (!marker) return;
+        LandMark* landmark = identifyLandMark(camera_to_marker_msg.child_frame_id);
+        if (!landmark) return;
 
         tf::StampedTransform tf_camera_to_marker;
         tf::transformStampedMsgToTF(camera_to_marker_msg, tf_camera_to_marker);
@@ -92,21 +92,21 @@ private:
         tf::Vector3 position = tf_marker_to_drone.getOrigin();
         tf::Quaternion orientation = tf_marker_to_drone.getRotation();
 
-        if (marker->frames > 0)
+        if (landmark->frames > 0)
         {
-            position = (position + marker->tf_to_drone.getOrigin() * marker->frames) / (1. + marker->frames);
-            orientation = marker->tf_to_drone.getRotation().slerp(orientation, 1.0 / marker->frames);
-            marker->frames = marker->frames < 10 ? marker->frames + 1 : marker->frames;
+            position = (position + landmark->tf_to_drone.getOrigin() * landmark->frames) / (1. + landmark->frames);
+            orientation = landmark->tf_to_drone.getRotation().slerp(orientation, 1.0 / landmark->frames);
+            landmark->frames = landmark->frames < 10 ? landmark->frames + 1 : landmark->frames;
         }
         else
         {
-            marker->frames = 1;
+            landmark->frames = 1;
         }
 
-        marker->used = false;
+        landmark->used = false;
 
-        marker->tf_to_drone.setOrigin(position);
-        marker->tf_to_drone.setRotation(orientation);
+        landmark->tf_to_drone.setOrigin(position);
+        landmark->tf_to_drone.setRotation(orientation);
     }
 
     void publishEstimate()
@@ -128,27 +128,27 @@ private:
                 "/the_estimate"));
     }
 
-    Marker* identifyMarker(const std::string& id)
+    LandMark* identifyLandMark(const std::string& id)
     {
         if ("marker_428" == id)
         {
-            return &the_marker_428;
+            return &landmark_428;
         }
         else if ("marker_341" == id)
         {
-            return &the_marker_341;
+            return &landmark_341;
         }
         else if ("marker_985" == id)
         {
-            return &the_marker_985;
+            return &landmark_985;
         }
         return nullptr;
     }
 
-    Marker the_marker_428;
-    Marker the_marker_341;
-    Marker the_marker_985;
-    std::vector<Marker*> known_markers;
+    LandMark landmark_428;
+    LandMark landmark_341;
+    LandMark landmark_985;
+    std::vector<LandMark*> known_landmarks;
 
     tf::Transform the_tf_odom;
     tf::Transform the_tf_odom_to_drone;
