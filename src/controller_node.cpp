@@ -15,6 +15,7 @@ struct ControllerNode
         : active(false)
         , threshold(0.01)
         , limit(0.30)
+        , set_point(tf::createIdentityQuaternion(), tf::Vector3(0.0, 0.0, 1.0))
         , estimate_topic(nh.subscribe<geometry_msgs::TransformStamped>("estimate", 10, &ControllerNode::onEstimate, this))
         , set_point_topic(nh.subscribe<geometry_msgs::Point>("set_point", 10, &ControllerNode::onSetPoint, this))
         , twist_topic(nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10))
@@ -24,9 +25,6 @@ struct ControllerNode
     {
         nh.param<double>("kp", kP, 0.2);
         nh.param<double>("kd", kD, 0.2);
-        the_tf_estimate[0] = tf::Transform(tf::createIdentityQuaternion(), tf::Vector3(0.0, 0.0, 0.0));
-        the_tf_estimate[1] = tf::Transform(tf::createIdentityQuaternion(), tf::Vector3(0.0, 0.0, 0.0));
-        the_tf_setpoint = tf::Transform(tf::createIdentityQuaternion(), tf::Vector3(0.0, 0.0, 1.0));
     }
 
     void run()
@@ -34,18 +32,8 @@ struct ControllerNode
         ros::Rate loop_rate(60); // Hz
         while (ros::ok())
         {
-            tf::Transform reference(the_tf_estimate[0].inverse().getRotation(), tf::Vector3(0., 0., 0.));
-
-            tf::Vector3 error = the_tf_setpoint.getOrigin() - the_tf_estimate[0].getOrigin();
-            error = reference * error;
-
-            double dt = (the_time_ns[0] - the_time_ns[1]) / 1.e9;
-            tf::Vector3 velocity = (the_tf_estimate[0].getOrigin() - the_tf_estimate[1].getOrigin()) / dt;
-            if (fabs(dt) < 0.0001)
-            {
-                velocity = tf::Vector3(0., 0., 0.);
-            }
-            velocity = reference * velocity;
+            auto error = currentRelativeError();
+            auto velocity = currentRelativeVelocity();
 
             double dx = error.x();
             double dy = error.y();
@@ -54,31 +42,16 @@ struct ControllerNode
             double vx = x_speed_filter(velocity.x());
             double vy = y_speed_filter(velocity.y());
 
-            double ctrl_x = kP * dx - kD * vx;
-            double ctrl_y = kP * dy - kD * vy;
-            double ctrl_z = dz;
-
-            // ROS_ERROR("X:%f Y:%f Z:%f", the_tf_estimate[0].getOrigin().x(), the_tf_estimate[0].getOrigin().y(), the_tf_estimate[0].getOrigin().z());
-            // ROS_ERROR("DX:%f DY:%f DZ:%f", dx, dy, dz);
-            // ROS_ERROR("VX:%f VY:%f", vx, vy);
-            // ROS_ERROR("CX:%f CY:%f CZ:%f", ctrl_x, ctrl_y, ctrl_z);
+            double ctrl_x = - (kP * dx + kD * vx);
+            double ctrl_y = - (kP * dy + kD * vy);
+            double ctrl_z = - dz;
 
             if (active)
             {
                 ctrl_x = threshold(limit(ctrl_x));
                 ctrl_y = threshold(limit(ctrl_y));
                 ctrl_z = threshold(ctrl_z);
-
-                //ROS_ERROR("CX:%f CY:%f CZ:%f", ctrl_x, ctrl_y, ctrl_z);
-
-                geometry_msgs::Twist twist;
-                twist.linear.x = ctrl_x;
-                twist.linear.y = ctrl_y;
-                twist.linear.z = ctrl_z;
-                twist.angular.x = 0.0;
-                twist.angular.y = 0.0;
-                twist.angular.z = 0.0;
-                twist_topic.publish(twist);
+                sendControlCommand(ctrl_x, ctrl_y, ctrl_z);
             }
 
             ros::spinOnce();
@@ -87,17 +60,50 @@ struct ControllerNode
     }
 
 private:
+    tf::Transform currentDroneReference()
+    {
+        return tf::Transform(current_belief.pose.inverse().getRotation(), tf::Vector3(0., 0., 0.));
+    }
+
+    tf::Vector3 currentRelativeError()
+    {
+        return currentDroneReference() * (current_belief.pose.getOrigin() - set_point.getOrigin());
+    }
+
+    tf::Vector3 currentRelativeVelocity()
+    {
+        double dt = (current_belief.time - previous_belief.time) / 1.e9;
+        tf::Vector3 velocity = (current_belief.pose.getOrigin() - previous_belief.pose.getOrigin()) / dt;
+        if (fabs(dt) < 0.0001)
+        {
+            return tf::Vector3(0., 0., 0.);
+        }
+        return currentDroneReference() * velocity;
+    }
+
+    void sendControlCommand(double ctrl_x, double ctrl_y, double ctrl_z)
+    {
+        geometry_msgs::Twist twist;
+        twist.linear.x = ctrl_x;
+        twist.linear.y = ctrl_y;
+        twist.linear.z = ctrl_z;
+        twist.angular.x = 0.0;
+        twist.angular.y = 0.0;
+        twist.angular.z = 0.0;
+        twist_topic.publish(twist);
+    }
+
     void onEstimate(geometry_msgs::TransformStamped estimate_msg)
     {
-        the_tf_estimate[1] = the_tf_estimate[0];
-        the_time_ns[1] = the_time_ns[0];
-        tf::transformMsgToTF(estimate_msg.transform, the_tf_estimate[0]);
-        the_time_ns[0] = ros::Time::now().toNSec();
+        previous_belief.pose = current_belief.pose;
+        previous_belief.time = current_belief.time;
+        tf::transformMsgToTF(estimate_msg.transform, current_belief.pose);
+        current_belief.time = ros::Time::now().toNSec();
     }
 
     void onSetPoint(geometry_msgs::Point msg)
     {
-        the_tf_setpoint.setOrigin(tf::Vector3(msg.x, msg.y, msg.z));
+        set_point.setOrigin(tf::Vector3(msg.x, msg.y, msg.z));
     }
 
     void onCommand(std_msgs::String msg)
@@ -105,13 +111,11 @@ private:
         std::string command = msg.data;
         if (command == "takeoff")
         {
-            active = false;
-            takeoff_topic.publish(std_msgs::Empty());
+            takeoff();
         }
         else if (command == "land")
         {
-            hover();
-            land_topic.publish(std_msgs::Empty());
+            land();
         }
         else if (command == "hover")
         {
@@ -119,30 +123,38 @@ private:
         }
         else if (command == "toggle_ctrl")
         {
-            if (active)
-            {
-                hover();
-            }
-            else
-            {
-                ROS_ERROR("ACTIVE");
-                active = true;
-            }
+            toggleCtrl();
         }
+    }
+
+    void takeoff()
+    {
+        active = false;
+        takeoff_topic.publish(std_msgs::Empty());
     }
 
     void hover()
     {
-        ROS_ERROR("HOVER");
         active = false;
-        geometry_msgs::Twist HoverTwist;
-        HoverTwist.linear.x = 0.0;
-        HoverTwist.linear.y = 0.0;
-        HoverTwist.linear.z = 0.0;
-        HoverTwist.angular.x = 0.0;
-        HoverTwist.angular.y = 0.0;
-        HoverTwist.angular.z = 0.0;
-        twist_topic.publish(HoverTwist);
+        sendControlCommand(0, 0, 0);
+    }
+
+    void land()
+    {
+        hover();
+        land_topic.publish(std_msgs::Empty());
+    }
+
+    void toggleCtrl()
+    {
+        if (active)
+        {
+            hover();
+        }
+        else
+        {
+            active = true;
+        }
     }
 
     bool active;
@@ -154,9 +166,24 @@ private:
     Threshold threshold;
     Limit limit;
 
+    struct Belief
+    {
+        Belief(tf::Transform pose = tf::Transform(tf::createIdentityQuaternion(), tf::Vector3(0, 0, 0)) , double time = 0)
+            : pose(pose)
+            , time(time)
+        {}
+
+        tf::Transform pose;
+        double time;
+    };
+
+    Belief current_belief;
+    Belief previous_belief;
+
     tf::Transform the_tf_estimate[2];
     double the_time_ns[2];
-    tf::Transform the_tf_setpoint;
+
+    tf::Transform set_point;
 
     ros::Subscriber estimate_topic;
     ros::Subscriber set_point_topic;
