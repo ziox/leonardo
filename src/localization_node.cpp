@@ -41,7 +41,7 @@ struct LocalizationNode
         , markers_topic(nh.subscribe<geometry_msgs::TransformStamped>("/marker_detector/markers", 10, &LocalizationNode::onMarker, this))
         , estimate_topic(nh.advertise<geometry_msgs::TransformStamped>("odometry", 10))
     {
-        the_markers = std::vector<Marker*> {&the_marker_428, &the_marker_341, &the_marker_985};
+        known_markers = std::vector<Marker*> {&the_marker_428, &the_marker_341, &the_marker_985};
 
         // ArDrone OK
         tf_drone_to_camera = tf::Transform(tf::Quaternion(-0.7071, 0.7071, 0.0, 0.0), tf::Vector3(0.0, 0.0, 0.0));
@@ -57,7 +57,7 @@ struct LocalizationNode
         {
             the_tf_estimate = the_tf_odom * the_tf_odom_to_drone;
 
-            for (auto marker : the_markers)
+            for (auto marker : known_markers)
             {
                 if (!marker->used)
                 {
@@ -82,20 +82,7 @@ private:
 
     void onMarker(geometry_msgs::TransformStamped camera_to_marker_msg)
     {
-        Marker* marker = nullptr;
-        if ("marker_428" == camera_to_marker_msg.child_frame_id)
-        {
-            marker = &the_marker_428;
-        }
-        else if ("marker_341" == camera_to_marker_msg.child_frame_id)
-        {
-            marker = &the_marker_341;
-        }
-        else if ("marker_985" == camera_to_marker_msg.child_frame_id)
-        {
-            marker = &the_marker_985;
-        }
-
+        Marker* marker = identifyMarker(camera_to_marker_msg.child_frame_id);
         if (!marker) return;
 
         tf::StampedTransform tf_camera_to_marker;
@@ -141,10 +128,27 @@ private:
                 "/the_estimate"));
     }
 
+    Marker* identifyMarker(const std::string& id)
+    {
+        if ("marker_428" == id)
+        {
+            return &the_marker_428;
+        }
+        else if ("marker_341" == id)
+        {
+            return &the_marker_341;
+        }
+        else if ("marker_985" == id)
+        {
+            return &the_marker_985;
+        }
+        return nullptr;
+    }
+
     Marker the_marker_428;
     Marker the_marker_341;
     Marker the_marker_985;
-    std::vector<Marker*> the_markers;
+    std::vector<Marker*> known_markers;
 
     tf::Transform the_tf_odom;
     tf::Transform the_tf_odom_to_drone;
