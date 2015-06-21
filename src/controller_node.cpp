@@ -111,10 +111,12 @@ int main(int argc, char* argv[])
     initialize_topics(handle);
     initialize_transforms(handle);
 
-    MAFilter<3> x_speed;
-    MAFilter<3> y_speed;
-
+    MAFilter<3> x_speed_filter;
+    MAFilter<3> y_speed_filter;
+    Threshold threshold(0.01);
+    Limit limit(0.30);
     ros::Rate loop_rate(60); // Hz
+
     while (ros::ok())
     {
         tf::Transform reference(the_tf_estimate[0].inverse().getRotation(), tf::Vector3(0., 0., 0.));
@@ -138,8 +140,8 @@ int main(int argc, char* argv[])
         double dy = error.y();
         double dz = error.z();
 
-        double vx = x_speed.filter(velocity.x());
-        double vy = y_speed.filter(velocity.y());
+        double vx = x_speed_filter(velocity.x());
+        double vy = y_speed_filter(velocity.y());
 
         double ctrl_x = kP * dx - kD * vx;
         double ctrl_y = kP * dy - kD * vy;
@@ -151,16 +153,11 @@ int main(int argc, char* argv[])
         // ROS_ERROR("VX:%f VY:%f", vx, vy);
         // ROS_ERROR("CX:%f CY:%f CZ:%f", ctrl_x, ctrl_y, ctrl_z);
 
-        constexpr double MIN_POWER = 0.01;
-        constexpr double MAX_POWER = 0.30;
-
         if (active)
         {
-            ctrl_x = std::max(std::min(ctrl_x, MAX_POWER), -MAX_POWER);
-            ctrl_x = fabs(ctrl_x) > MIN_POWER ? ctrl_x : 0.0;
-            ctrl_y = std::max(std::min(ctrl_y, MAX_POWER), -MAX_POWER);
-            ctrl_y = fabs(ctrl_y) > MIN_POWER ? ctrl_y : 0.0;
-            ctrl_z = fabs(ctrl_z) > MIN_POWER ? ctrl_z : 0.0;
+            ctrl_x = threshold(limit(ctrl_x));
+            ctrl_y = threshold(limit(ctrl_y));
+            ctrl_z = threshold(ctrl_z);
 
             //ROS_ERROR("CX:%f CY:%f CZ:%f", ctrl_x, ctrl_y, ctrl_z);
 

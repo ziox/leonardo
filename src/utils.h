@@ -10,10 +10,9 @@ class MAFilter
 {
 public:
     MAFilter()
-    {
-    }
+    {}
 
-    inline double filter(double in)
+    inline double operator()(double in)
     {
         double out = 0.0;
         for(int i = 0; i < N - 1; ++i) {
@@ -52,6 +51,38 @@ public:
 private:
     tf::Vector3 values[N];
 };
+
+
+struct Limit
+{
+    Limit(double limit)
+        : limit(limit)
+    {}
+
+    double operator()(double value)
+    {
+        return std::max(std::min(value, limit), -limit);
+    }
+
+private:
+    const double limit;
+};
+
+struct Threshold
+{
+    Threshold(double threshold)
+        : threshold(threshold)
+    {}
+
+    double operator()(double value)
+    {
+        return fabs(value) > threshold ? value : 0.0;
+    }
+
+private:
+    const double threshold;
+};
+
 
 class MotionProfile
 {
