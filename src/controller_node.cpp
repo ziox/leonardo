@@ -179,10 +179,6 @@ private:
 
     Belief current_belief;
     Belief previous_belief;
-
-    tf::Transform the_tf_estimate[2];
-    double the_time_ns[2];
-
     tf::Transform set_point;
 
     ros::Subscriber estimate_topic;
