@@ -36,10 +36,6 @@ struct ControllerNode
         {
             tf::Transform reference(the_tf_estimate[0].inverse().getRotation(), tf::Vector3(0., 0., 0.));
 
-            tf::Vector3 direction = reference * tf::Vector3(1., 0., 0.);
-            double angle = tf::Vector3(1., 0., 0.).angle(direction);
-            angle = direction.y() < 0 ? angle : -angle;
-
             tf::Vector3 error = the_tf_setpoint.getOrigin() - the_tf_estimate[0].getOrigin();
             error = reference * error;
 
@@ -62,7 +58,6 @@ struct ControllerNode
             double ctrl_y = kP * dy - kD * vy;
             double ctrl_z = dz;
 
-            // ROS_ERROR("Angle:%f", angle);
             // ROS_ERROR("X:%f Y:%f Z:%f", the_tf_estimate[0].getOrigin().x(), the_tf_estimate[0].getOrigin().y(), the_tf_estimate[0].getOrigin().z());
             // ROS_ERROR("DX:%f DY:%f DZ:%f", dx, dy, dz);
             // ROS_ERROR("VX:%f VY:%f", vx, vy);
