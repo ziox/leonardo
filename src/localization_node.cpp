@@ -36,11 +36,12 @@ struct LocalizationNode
         : landmark_428(0, 0)
         , landmark_341(0, 0)
         , landmark_985(2, 0)
+        , landmark_177(0, 2)
         , odometry_topic(nh.subscribe<geometry_msgs::TransformStamped>("odometry", 10, &LocalizationNode::onOdometry, this))
         , markers_topic(nh.subscribe<geometry_msgs::TransformStamped>("/marker_detector/markers", 10, &LocalizationNode::onMarker, this))
         , estimate_topic(nh.advertise<geometry_msgs::TransformStamped>("estimate", 10))
     {
-        known_landmarks = std::vector<LandMark*> {&landmark_428, &landmark_341, &landmark_985};
+        known_landmarks = std::vector<LandMark*> {&landmark_428, &landmark_341, &landmark_985, &landmark_177};
 
         // ArDrone OK
         tf_drone_to_camera = tf::Transform(tf::Quaternion(-0.7071, 0.7071, 0.0, 0.0), tf::Vector3(0.0, 0.0, 0.0));
@@ -137,6 +138,10 @@ private:
         {
             return &landmark_341;
         }
+        else if ("marker_177" == id)
+        {
+            return &landmark_177;
+        }
         else if ("marker_985" == id)
         {
             return &landmark_985;
@@ -147,6 +152,7 @@ private:
     LandMark landmark_428;
     LandMark landmark_341;
     LandMark landmark_985;
+    LandMark landmark_177;
     std::vector<LandMark*> known_landmarks;
 
     tf::Transform the_tf_odom;
