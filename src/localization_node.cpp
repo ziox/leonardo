@@ -38,7 +38,7 @@ struct LocalizationNode
         , landmark_985(2, 0)
         , odometry_topic(nh.subscribe<geometry_msgs::TransformStamped>("odometry", 10, &LocalizationNode::onOdometry, this))
         , markers_topic(nh.subscribe<geometry_msgs::TransformStamped>("/marker_detector/markers", 10, &LocalizationNode::onMarker, this))
-        , estimate_topic(nh.advertise<geometry_msgs::TransformStamped>("odometry", 10))
+        , estimate_topic(nh.advertise<geometry_msgs::TransformStamped>("estimate", 10))
     {
         known_landmarks = std::vector<LandMark*> {&landmark_428, &landmark_341, &landmark_985};
 

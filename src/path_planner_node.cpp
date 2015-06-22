@@ -77,7 +77,7 @@ private:
                 tf::Transform(tf::createIdentityQuaternion(), actual),
                 ros::Time::now(),
                 "/map",
-                "/the_drone"));
+                "/the_set_point"));
     }
 
     int tick;
