@@ -26,7 +26,6 @@ struct LandMark
     tf::Transform tf_to_drone;
 
     unsigned int frames;
-    double sigma;
     bool used;
 };
 
