@@ -49,7 +49,7 @@ private:
         if (dt_us < 0)
         {
             ROS_ERROR("NEGATIVE TIME");
-            previous_tm = navdata.tm;
+            // previous_tm = navdata.tm;
             return;
         }
 
