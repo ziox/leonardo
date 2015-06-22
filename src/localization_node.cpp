@@ -22,10 +22,16 @@ struct LandMark
         , used(true)
     {}
 
+    // absolute position of the marker (map)
     tf::Transform absolute_position;
+
+    // current marker to drone transform
     tf::Transform tf_to_drone;
 
+    // how many frames did you see the marker in
     unsigned int frames;
+
+    // has been used by the localization algorithm
     bool used;
 };
 
